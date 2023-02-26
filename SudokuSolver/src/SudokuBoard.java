@@ -4,24 +4,28 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+
 
 public class SudokuBoard extends JFrame {
-    public SudokuBoard(){
-      setTitle("Sudoku");
-      setSize(450, 450);
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
+    private String[][] boardData = new String[9][9];
+    private static int[][] boardDataIntegers = new int[9][9];
+    public SudokuBoard() {
+        setTitle("Sudoku Board");
+        setSize(450, 450);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        JPanel sudokuPanel = new JPanel(new GridLayout(9, 9));
+        JTextField[][] textFields = new JTextField[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                textFields[i][j] = new JTextField();
+                textFields[i][j].setHorizontalAlignment(JTextField.CENTER);
+                sudokuPanel.add(textFields[i][j]);
 
-      JPanel sudoku = new JPanel(new GridLayout(9, 9));
-      JTextField[][] numFields = new JTextField[9][9];
-
-        for (int row = 0; row < 9; row++) {
-            for (int column = 0; column < 9; column++) {
-                numFields[row][column] = new JTextField();
-                numFields[row][column].setHorizontalAlignment(JTextField.CENTER);
-                sudoku.add(numFields[row][column]);
-
-                ((AbstractDocument) numFields[row][column].getDocument()).setDocumentFilter(new DocumentFilter() {
+                ((AbstractDocument) textFields[i][j].getDocument()).setDocumentFilter(new DocumentFilter() {
                     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                         String newValue = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
                         if (newValue.length() <= 1 && newValue.matches("\\d")) {
@@ -29,14 +33,18 @@ public class SudokuBoard extends JFrame {
                         }
                     }
                 });
+
+
+
+                // Add the grid to the frame
+                getContentPane().add(sudokuPanel, BorderLayout.CENTER);
+                setVisible(true);
             }
+
         }
-
-
-      getContentPane().add(sudoku, BorderLayout.CENTER);
-      setVisible(true);
     }
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws InterruptedException {
         new SudokuBoard();
     }
 }
