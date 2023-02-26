@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 
 
 public class SudokuBoard extends JFrame {
-    private String[][] boardData = new String[9][9];
     private static int[][] boardDataIntegers = new int[9][9];
+    private static String[][] boardData = new String[9][9];
     public SudokuBoard() {
         setTitle("Sudoku Board");
         setSize(450, 450);
@@ -23,8 +23,36 @@ public class SudokuBoard extends JFrame {
             for (int j = 0; j < 9; j++) {
                 textFields[i][j] = new JTextField();
                 textFields[i][j].setHorizontalAlignment(JTextField.CENTER);
-                sudokuPanel.add(textFields[i][j]);
 
+                //adding keylisteners to every textbox
+                textFields[i][j].addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            // Transfer contents of board to string matrix
+                            for (int k = 0; k < 9; k++) {
+                                for (int l = 0; l < 9; l++) {
+                                    String textBoxData = textFields[k][l].getText();
+                                    if(textBoxData.isEmpty()){
+                                        textBoxData = "0";
+                                    }
+                                    boardDataIntegers[k][l] = Integer.parseInt(textBoxData);
+                                }
+                            }
+                            // Output board data to console
+                            for (int k = 0; k < 9; k++) {
+                                for (int l = 0; l < 9; l++) {
+                                    System.out.print(boardDataIntegers[k][l] + " ");
+                                }
+                                System.out.println();
+                            }
+                            // Dispose the JFrame
+                            dispose();
+                        }
+                    }
+                });
+
+                //making sure each textbox takes at most one integer of size 1 mening from 0 to 9
                 ((AbstractDocument) textFields[i][j].getDocument()).setDocumentFilter(new DocumentFilter() {
                     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                         String newValue = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
@@ -34,14 +62,12 @@ public class SudokuBoard extends JFrame {
                     }
                 });
 
-
-
-                // Add the grid to the frame
-                getContentPane().add(sudokuPanel, BorderLayout.CENTER);
-                setVisible(true);
+                sudokuPanel.add(textFields[i][j]);
             }
 
         }
+        getContentPane().add(sudokuPanel, BorderLayout.CENTER);
+        setVisible(true);
     }
 
     public static void main(String[] args) throws InterruptedException {
