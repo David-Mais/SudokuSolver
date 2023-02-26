@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 
 
 public class SudokuBoard extends JFrame {
+    SudokuSolver sudokuSolver = new SudokuSolver();
     private static int[][] boardDataIntegers = new int[9][9];
     private static String[][] boardData = new String[9][9];
     public SudokuBoard() {
@@ -29,6 +30,7 @@ public class SudokuBoard extends JFrame {
                     @Override
                     public void keyPressed(KeyEvent e) {
                         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
                             // Transfer contents of board to string matrix
                             for (int k = 0; k < 9; k++) {
                                 for (int l = 0; l < 9; l++) {
@@ -39,13 +41,10 @@ public class SudokuBoard extends JFrame {
                                     boardDataIntegers[k][l] = Integer.parseInt(textBoxData);
                                 }
                             }
-                            // Output board data to console
-                            for (int k = 0; k < 9; k++) {
-                                for (int l = 0; l < 9; l++) {
-                                    System.out.print(boardDataIntegers[k][l] + " ");
-                                }
-                                System.out.println();
-                            }
+
+                            SudokuSolver.solver(boardDataIntegers);
+                            SudokuSolver.printGrid(boardDataIntegers);
+
                             // Dispose the JFrame
                             dispose();
                         }
