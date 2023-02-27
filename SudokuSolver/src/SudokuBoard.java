@@ -10,14 +10,22 @@ import java.awt.event.KeyEvent;
 
 
 public class SudokuBoard extends JFrame {
+    /*we need to create SudokuSolver object in order to make modifications to
+    what the user has typed
+     */
+
     SudokuSolver sudokuSolver = new SudokuSolver();
+
+    //this keeps track of what the user has typed in textboxes
     private static int[][] boardDataIntegers = new int[9][9];
-    private static String[][] boardData = new String[9][9];
+
     public SudokuBoard() {
         setTitle("Sudoku Board");
         setSize(450, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+
+        //creating jpanel and creating 81 textboxes in 9x9 grid
         JPanel sudokuPanel = new JPanel(new GridLayout(9, 9));
         JTextField[][] textFields = new JTextField[9][9];
         for (int i = 0; i < 9; i++) {
@@ -47,6 +55,8 @@ public class SudokuBoard extends JFrame {
 
                             // Dispose the JFrame
                             dispose();
+
+
                         }
                     }
                 });
@@ -65,6 +75,8 @@ public class SudokuBoard extends JFrame {
             }
 
         }
+
+        //this makes the textboxes appear on th board
         getContentPane().add(sudokuPanel, BorderLayout.CENTER);
         setVisible(true);
     }
